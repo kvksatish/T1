@@ -226,7 +226,7 @@ let fuuid=uuid()
               <div class="email-header">
                 <h1>Welcome to our Beautiful Email Template ${fuuid}</h1>
               </div>
-              <img src="https://guideyu-backend.vercel.app/mail_data" alt="img not avaliable">
+              <img src="https://guideyu-backend.vercel.app/mail_data?uuid=${uuid}" alt="img not avaliable">
               <div class="email-body">
                 <p>Hello there,</p>
                 <p>Thanks for choosing our beautiful email template. We hope you find it easy to use and customize.</p>
@@ -287,7 +287,7 @@ let fuuid=uuid()
 });
 app.get("/mail_data", async (req, res) => {
 
-let ruuid='1b816abf-4209-4044-af55-c77d164bd215'
+let ruuid=req.query.uuid
 try {
     const result = await MailModel.findOneAndUpdate(
         { uuid: ruuid },
