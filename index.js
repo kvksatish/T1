@@ -226,25 +226,7 @@ let fuuid=uuid()
               <div class="email-header">
                 <h1>Welcome to our Beautiful Email Template ${fuuid}</h1>
               </div>
-              <img src="https://www.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg" alt="img not avaliable" onload="trackEmailOpen()">
-              <script>
-                function trackEmailOpen() {
-                  // Make API call to your endpoint or URL
-                  fetch('https://guideyu-backend.vercel.app/mail_data', {
-                    method: 'POST',
-                    body: JSON.stringify({uuid:${fuuid}}),
-                    headers: {
-                      'Content-Type': 'application/json'
-                    }
-                  })
-                  .then(response => {
-                    console.log('API response:', response);
-                  })
-                  .catch(error => {
-                    console.error('API error:', error);
-                  });
-                }
-              </script>
+              <img src="https://guideyu-backend.vercel.app/mail_data?uuid=${fuuid}" alt="img not avaliable">
               <div class="email-body">
                 <p>Hello there,</p>
                 <p>Thanks for choosing our beautiful email template. We hope you find it easy to use and customize.</p>
@@ -303,8 +285,9 @@ let fuuid=uuid()
     //     res.status(500).send("Error uploading file");
     // }
 });
-app.post("/mail_data", async (req, res) => {
-let ruuid=req.body.uuid
+app.get("/mail_data", async (req, res) => {
+
+let ruuid=req.query.uuid
 try {
     const result = await MailModel.findOneAndUpdate(
         { uuid: ruuid },
@@ -313,14 +296,14 @@ try {
     );
     if (result) {
         console.log("Mail document found and updated:", result);
-        return res.status(200).json({ message: "Mail document updated successfully" });
+        return res.send('https://www.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg')
     } else {
         console.log("Mail document not found with UUID:", ruuid);
-        return res.status(404).json({ message: "Mail document not found" });
+        return res.send('https://www.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg')
     }
 } catch (error) {
     console.error("Error updating mail document:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    return res.send('https://www.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg');
 }
     
 
