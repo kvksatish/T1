@@ -129,7 +129,7 @@ app.post("/dashboard", authentication, async (req, res) => {
     //     res.status(500).send("Error uploading file");
     // }
 });
-app.post("/multiple_mails_sender", async (req, res) => {
+app.get("/multiple_mails_sender", async (req, res) => {
 console.log("first",uuid())
 let fuuid=uuid()
 
@@ -226,7 +226,7 @@ let fuuid=uuid()
               <div class="email-header">
                 <h1>Welcome to our Beautiful Email Template ${fuuid}</h1>
               </div>
-              <img src="https://guideyu-backend.vercel.app/mail_data?uuid=${fuuid}" alt="img not avaliable">
+              <img src="https://guideyu-backend.vercel.app/multiple_mails_sender" alt="img not avaliable">
               <div class="email-body">
                 <p>Hello there,</p>
                 <p>Thanks for choosing our beautiful email template. We hope you find it easy to use and customize.</p>
