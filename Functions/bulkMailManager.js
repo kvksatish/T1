@@ -1,4 +1,4 @@
-const { MailModel } = require("../Models/Maildata");
+//const { MailModel } = require("../Models/Maildata");
 //const mailSender = require("./MailSender");
 // let f = 0;
 // let s = 0;
@@ -16,6 +16,7 @@ async function bulkMailManager(data, session) {
   // f = 0;
   // s = 0;
   // tt = 0;
+  return "vefv";
 }
 
 module.exports = bulkMailManager;
