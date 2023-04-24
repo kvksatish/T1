@@ -21,7 +21,7 @@ app.use(cors());
 const storage = multer.memoryStorage();
 const { MailModel } = require("./Models/Maildata.js");
 const csvToJson = require("./Middleware/csvToJson.js");
-//const managerofmails = require("./Functions/managerofmails.js");
+const managerofmails = require("./Functions/managerofmails.js");
 
 app.get("/", (req, res) => {
   res.send("welcome");
