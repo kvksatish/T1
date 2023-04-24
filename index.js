@@ -22,7 +22,7 @@ const storage = multer.memoryStorage();
 const { MailModel } = require("./Models/Maildata.js");
 // const csvToJson = require("./Middleware/csvToJson.js");
 // const mailSender = require("./Functions/MailSender.js");
-// const bulkMailManager = require("./Functions/BulkMailManager.js");
+const bulkMailManager = require("./Functions/BulkMailManager.js");
 
 app.get("/", (req, res) => {
   res.send("welcome");
