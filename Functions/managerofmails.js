@@ -3,7 +3,7 @@ const mailSender = require("./MailSender");
 let f = 0;
 let s = 0;
 let tt = 0;
-async function bulkMailManager(data, session) {
+async function managerofmails(data, session) {
   tt = data.length;
   session.push(`Bulk Mailing has started please dont close the window`);
   for (const ele of data) {
@@ -18,7 +18,7 @@ async function bulkMailManager(data, session) {
   tt = 0;
 }
 
-module.exports = bulkMailManager;
+module.exports = managerofmails;
 
 async function mailchecker(email, id, session) {
   try {

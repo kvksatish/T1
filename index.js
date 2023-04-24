@@ -21,7 +21,7 @@ app.use(cors());
 const storage = multer.memoryStorage();
 const { MailModel } = require("./Models/Maildata.js");
 const csvToJson = require("./Middleware/csvToJson.js");
-const bulkMailManager = require("./Functions/bulkMailManager.js");
+const managerofmails = require("./Functions/managerofmails.js");
 
 app.get("/", (req, res) => {
   res.send("welcome");
@@ -133,7 +133,7 @@ app.get("/batch_bulk_mailing/:batchid", authentication, async (req, res) => {
   console.log(data, batchids);
   session.push(`found data in database using batchid `);
   try {
-    bulkMailManager(data, session);
+    managerofmails(data, session);
   } catch (error) {}
 });
 
