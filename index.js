@@ -120,7 +120,8 @@ app.post(
   }
 );
 
-app.get("/batch_bulk_mailing/:batchid", authentication, async (req, res) => {
+app.get("/batch_bulk_mailing/:batchid", async (req, res) => {
+  console.log("first");
   const session = await createSession(req, res);
   const type = req.query.type;
   let batchid = req.params.batchid;

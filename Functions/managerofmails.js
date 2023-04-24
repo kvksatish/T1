@@ -22,7 +22,8 @@ module.exports = managerofmails;
 
 async function mailchecker(email, id, session) {
   try {
-    await mailSender(id, email);
+    let msr = await mailSender(id, email);
+    console.log(msr, "msrrrrrrrr");
     const result = await MailModel.findOneAndUpdate(
       { uuid: id },
       { $set: { status: "DELIVERED" } },
