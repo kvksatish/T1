@@ -1,5 +1,5 @@
 const { MailModel } = require("../Models/Maildata");
-//const mailSender = require("./MailSender");
+const mailSender = require("./MailSender");
 let f = 0;
 let s = 0;
 let tt = 0;
@@ -16,13 +16,14 @@ async function managerofmails(data, session) {
   f = 0;
   s = 0;
   tt = 0;
+  return;
 }
 
 module.exports = managerofmails;
 
 async function mailchecker(email, id, session) {
   try {
-    //await mailSender(id, email);
+    await mailSender(id, email);
     // console.log(msr, "msrrrrrrrr");
     const result = await MailModel.findOneAndUpdate(
       { uuid: id },
@@ -34,6 +35,7 @@ async function mailchecker(email, id, session) {
         tt - (s + f)
       } TotalMails:${tt}  sentsuccess`
     );
+    return;
   } catch (err) {
     const result = await MailModel.findOneAndUpdate(
       { uuid: id },
@@ -46,5 +48,6 @@ async function mailchecker(email, id, session) {
       } TotalMails:${tt}  Failed`
     );
     // handle error
+    return;
   }
 }

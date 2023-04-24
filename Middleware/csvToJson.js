@@ -18,7 +18,8 @@ function csvToJson(req, res, next) {
           state: ele["STATE"],
           activity: ele["ACTIVITY DESCRIPTION"],
           address: ele["REGISTERED OFFICE ADDRESS"],
-          email: ele["EMAIL"],
+          //  email: ele["EMAIL"],
+          email: "yehoshua.ademide@findours.com",
           uuid: uuid(),
           batchid: bid,
         };
