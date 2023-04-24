@@ -173,66 +173,66 @@ app.post("/signup", async (req, res) => {
 //   }
 // });
 
-// app.get("/mail_data/:uuid", authentication, async (req, res) => {
-//   let ruuid = req.params.uuid;
-//   const result = await MailModel.findOneAndUpdate(
-//     { uuid: ruuid },
-//     { $set: { open_time: Date.now(), status: "OPENED" } },
-//     { new: true }
-//   ).select("uuid");
-// });
-
-app.get("/all_batchs_info", async (req, res) => {
-  const itemsPerPage = 10;
-
-  // Parse the current page from the query parameters
-  const page = parseInt(req.query.page) || 1;
-
-  let batchids = await MailModel.distinct("batchid");
-  let batchInfo = [];
-
-  for (let i = 0; i < batchids.length; i++) {
-    let mail = await MailModel.findOne({ batchid: batchids[i] }).sort({
-      uploadtime: -1,
-    });
-    let count = await MailModel.countDocuments({ batchid: batchids[i] });
-    let uploadtime = mail.uploadtime;
-    batchInfo.push({
-      batchid: batchids[i],
-      uploadtime: uploadtime,
-      totalmails: count,
-    });
-  }
-
-  // Sort the batchInfo array by uploadtime in descending order
-  batchInfo.sort((b, a) => new Date(a.uploadtime) - new Date(b.uploadtime));
-
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(batchInfo.length / itemsPerPage);
-
-  // Calculate the index of the first item on the current page
-  const startIndex = (page - 1) * itemsPerPage;
-
-  // Calculate the index of the last item on the current page
-  const endIndex = startIndex + itemsPerPage;
-
-  // Get the current page of items
-  const currentBatchInfo = batchInfo.slice(startIndex, endIndex);
-
-  // Construct the response object with the current page of items and pagination metadata
-  const response = {
-    batchInfo: currentBatchInfo,
-    currentPage: page,
-    totalPages: totalPages,
-    hasPreviousPage: page > 1,
-    previousPage: page - 1,
-    hasNextPage: endIndex < batchInfo.length,
-    nextPage: page + 1,
-  };
-
-  console.log(response);
-  res.send(response);
+app.get("/mail_data/:uuid", authentication, async (req, res) => {
+  let ruuid = req.params.uuid;
+  const result = await MailModel.findOneAndUpdate(
+    { uuid: ruuid },
+    { $set: { open_time: Date.now(), status: "OPENED" } },
+    { new: true }
+  ).select("uuid");
 });
+
+// app.get("/all_batchs_info", authentication, async (req, res) => {
+//   const itemsPerPage = 10;
+
+//   // Parse the current page from the query parameters
+//   const page = parseInt(req.query.page) || 1;
+
+//   let batchids = await MailModel.distinct("batchid");
+//   let batchInfo = [];
+
+//   for (let i = 0; i < batchids.length; i++) {
+//     let mail = await MailModel.findOne({ batchid: batchids[i] }).sort({
+//       uploadtime: -1,
+//     });
+//     let count = await MailModel.countDocuments({ batchid: batchids[i] });
+//     let uploadtime = mail.uploadtime;
+//     batchInfo.push({
+//       batchid: batchids[i],
+//       uploadtime: uploadtime,
+//       totalmails: count,
+//     });
+//   }
+
+//   // Sort the batchInfo array by uploadtime in descending order
+//   batchInfo.sort((b, a) => new Date(a.uploadtime) - new Date(b.uploadtime));
+
+//   // Calculate the total number of pages
+//   const totalPages = Math.ceil(batchInfo.length / itemsPerPage);
+
+//   // Calculate the index of the first item on the current page
+//   const startIndex = (page - 1) * itemsPerPage;
+
+//   // Calculate the index of the last item on the current page
+//   const endIndex = startIndex + itemsPerPage;
+
+//   // Get the current page of items
+//   const currentBatchInfo = batchInfo.slice(startIndex, endIndex);
+
+//   // Construct the response object with the current page of items and pagination metadata
+//   const response = {
+//     batchInfo: currentBatchInfo,
+//     currentPage: page,
+//     totalPages: totalPages,
+//     hasPreviousPage: page > 1,
+//     previousPage: page - 1,
+//     hasNextPage: endIndex < batchInfo.length,
+//     nextPage: page + 1,
+//   };
+
+//   console.log(response);
+//   res.send(response);
+// });
 
 app.listen(7500, async () => {
   try {
