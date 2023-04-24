@@ -8,10 +8,10 @@ async function managerofmails(data, session) {
   session.push(`Bulk Mailing has started please dont close the window`);
   for (const ele of data) {
     await mailchecker(ele.email, ele.uuid, session);
-    await new Promise((resolve) => setTimeout(resolve, 500)); // wait for 1 second
+    //wait new Promise((resolve) => setTimeout(resolve, 500)); // wait for 1 second
   }
   session.push(`All Mails Are Successfully Sent`);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  //await new Promise((resolve) => setTimeout(resolve, 1000));
   session.push(``);
   f = 0;
   s = 0;
