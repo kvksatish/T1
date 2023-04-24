@@ -18,8 +18,6 @@ require("dotenv").config();
 app.use(express.json());
 app.use(cors());
 
-const multer = require("multer");
-const { ImagesModel } = require("./Models/ImagesData.js");
 const storage = multer.memoryStorage();
 const { MailModel } = require("./Models/Maildata.js");
 // const csvToJson = require("./Middleware/csvToJson.js");
