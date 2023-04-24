@@ -6,16 +6,14 @@ const { UserModel } = require("./Models/User");
 const passwordValidator = require("password-validator");
 const validator = require("validator");
 const cors = require("cors");
-const authentication = require("./Middleware/authentication.js");
-const cloudinary = require("./cloudinary.js");
-const { default: axios } = require("axios");
+//const authentication = require("./Middleware/authentication.js");
 const app = express();
 const { v4: uuid } = require("uuid");
-const { createSession } = require("better-sse");
+//const { createSession } = require("better-sse");
 
-const multer = require("multer");
+//const multer = require("multer");
 
-const upload = multer();
+//const upload = multer();
 require("dotenv").config();
 app.use(express.json());
 app.use(cors());
