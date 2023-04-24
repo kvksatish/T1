@@ -1,5 +1,5 @@
 const { MailModel } = require("../Models/Maildata");
-const mailSender = require("./MailSender");
+//const mailSender = require("./MailSender");
 let f = 0;
 let s = 0;
 let tt = 0;
@@ -20,30 +20,30 @@ async function bulkMailManager(data, session) {
 
 module.exports = bulkMailManager;
 
-async function mailchecker(email, id, session) {
-  try {
-    await mailSender(id, email);
-    const result = await MailModel.findOneAndUpdate(
-      { uuid: id },
-      { $set: { status: "DELIVERED" } },
-      { new: true }
-    );
-    session.push(
-      `uuid:${id} emailid:${email} SuccessfulMails:${++s} FailedMails:${f} RemainingMails:${
-        tt - (s + f)
-      } TotalMails:${tt}  sentsuccess`
-    );
-  } catch (err) {
-    const result = await MailModel.findOneAndUpdate(
-      { uuid: id },
-      { $set: { status: "FAILED" } },
-      { new: true }
-    );
-    session.push(
-      `uuid:${id} emailid:${email} SuccessfulMails:${s} FailedMails:${++f} RemainingMails:${
-        tt - (s + f)
-      } TotalMails:${tt}  Failed`
-    );
-    // handle error
-  }
-}
+// async function mailchecker(email, id, session) {
+//   try {
+//     await mailSender(id, email);
+//     const result = await MailModel.findOneAndUpdate(
+//       { uuid: id },
+//       { $set: { status: "DELIVERED" } },
+//       { new: true }
+//     );
+//     session.push(
+//       `uuid:${id} emailid:${email} SuccessfulMails:${++s} FailedMails:${f} RemainingMails:${
+//         tt - (s + f)
+//       } TotalMails:${tt}  sentsuccess`
+//     );
+//   } catch (err) {
+//     const result = await MailModel.findOneAndUpdate(
+//       { uuid: id },
+//       { $set: { status: "FAILED" } },
+//       { new: true }
+//     );
+//     session.push(
+//       `uuid:${id} emailid:${email} SuccessfulMails:${s} FailedMails:${++f} RemainingMails:${
+//         tt - (s + f)
+//       } TotalMails:${tt}  Failed`
+//     );
+//     // handle error
+//   }
+// }
