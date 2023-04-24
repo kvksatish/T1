@@ -173,14 +173,14 @@ app.post("/signup", async (req, res) => {
 //   }
 // });
 
-app.get("/mail_data/:uuid", authentication, async (req, res) => {
-  let ruuid = req.params.uuid;
-  const result = await MailModel.findOneAndUpdate(
-    { uuid: ruuid },
-    { $set: { open_time: Date.now(), status: "OPENED" } },
-    { new: true }
-  ).select("uuid");
-});
+// app.get("/mail_data/:uuid", authentication, async (req, res) => {
+//   let ruuid = req.params.uuid;
+//   const result = await MailModel.findOneAndUpdate(
+//     { uuid: ruuid },
+//     { $set: { open_time: Date.now(), status: "OPENED" } },
+//     { new: true }
+//   ).select("uuid");
+// });
 
 // app.get("/all_batchs_info", authentication, async (req, res) => {
 //   const itemsPerPage = 10;
