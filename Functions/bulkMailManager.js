@@ -1,8 +1,8 @@
 const { MailModel } = require("../Models/Maildata");
 //const mailSender = require("./MailSender");
-let f = 0;
-let s = 0;
-let tt = 0;
+// let f = 0;
+// let s = 0;
+// let tt = 0;
 async function bulkMailManager(data, session) {
   // tt = data.length;
   // session.push(`Bulk Mailing has started please dont close the window`);
