@@ -1,6 +1,6 @@
 //const nodemailer=require('nodemailer')
 
-function mailSender(fuuid, to) {
+async function mailSender(fuuid, to) {
   return new Promise((resolve, reject) => {
     resolve("csdsc");
   });
