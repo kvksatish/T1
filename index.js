@@ -158,22 +158,22 @@ app.post(
   }
 );
 
-app.get("/batch_bulk_mailing/:batchid", authentication, async (req, res) => {
-  const session = await createSession(req, res);
-  const type = req.query.type;
-  let batchid = req.params.batchid;
-  console.log(batchid, "bid");
-  let data = await MailModel.find({
-    batchid,
-    status: { $in: type },
-  });
-  let batchids = await MailModel.distinct("batchid");
-  console.log(data, batchids);
-  session.push(`found data in database using batchid `);
-  try {
-    bulkMailManager(data, session);
-  } catch (error) {}
-});
+// app.get("/batch_bulk_mailing/:batchid", authentication, async (req, res) => {
+//   const session = await createSession(req, res);
+//   const type = req.query.type;
+//   let batchid = req.params.batchid;
+//   console.log(batchid, "bid");
+//   let data = await MailModel.find({
+//     batchid,
+//     status: { $in: type },
+//   });
+//   let batchids = await MailModel.distinct("batchid");
+//   console.log(data, batchids);
+//   session.push(`found data in database using batchid `);
+//   try {
+//     bulkMailManager(data, session);
+//   } catch (error) {}
+// });
 
 app.get("/batchwise_mails/:batchid", authentication, async (req, res) => {
   try {
