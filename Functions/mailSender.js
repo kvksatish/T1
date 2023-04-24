@@ -1,4 +1,38 @@
-<!DOCTYPE html>
+
+const { MailModel } = require("../Models/Maildata.js");
+
+const nodemailer=require('nodemailer')
+
+function mailSender(fuuid,to){
+    console.log(fuuid,to)
+    return new Promise((resolve,reject)=>{
+
+   
+    
+        try {
+            const mail = new MailModel({ uuid:fuuid });
+
+            // Save the user to the database
+          //  mail.save();
+        } catch (error) {
+            reject(error)
+        }
+
+    
+
+    const transporter=nodemailer.createTransport({
+        service:'gmail',
+        auth:{
+            user:"kvksatish98@gmail.com",
+            pass:"xkvdtlmziwvokapy"
+        }
+    })
+
+    const options={
+        from:"kvksatish98@gmail.com",
+        to,
+        subject:"testing nodemailer",
+        html:`<!DOCTYPE html>
         <html>
           <head>
             <meta charset="utf-8">
@@ -68,23 +102,7 @@
               <div class="email-header">
                 <h1>Welcome to our Beautiful Email Template ${fuuid}</h1>
               </div>
-              <img src="https://www.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg" alt="img not avaliable" onload="trackEmailOpen()">
-              <script>
-                function trackEmailOpen() {
-                  fetch('https://guideyu-backend.vercel.app/mail_data', {
-                    method: 'POST',
-                    body: JSON.stringify({uuid:"4d2e11bd-54d5-41ce-ac78-61bfb2659595"}),
-                    headers: {
-                      'Content-Type': 'application/json'
-                    }
-                  }).then(response => {
-                    console.log('API response:', response);
-                  })
-                  .catch(error => {
-                    console.error('API error:', error);
-                  });
-                }
-              </script>
+              <img src="https://guideyu-backend.vercel.app/mail_data/${fuuid}" alt="img not avaliable">
               <div class="email-body">
                 <p>Hello there,</p>
                 <p>Thanks for choosing our beautiful email template. We hope you find it easy to use and customize.</p>
@@ -100,3 +118,19 @@
             </div>
           </body>
         </html>
+        `
+    }
+
+    transporter.sendMail(options,function(err,info){
+        if(err){
+            console.log(err)
+            reject(err)
+        }
+        console.log(info)
+        resolve(info)
+    })
+
+})
+}
+
+module.exports = mailSender;
