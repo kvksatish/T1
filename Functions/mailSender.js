@@ -1,15 +1,15 @@
-const nodemailer = require("nodemailer");
+//const nodemailer = require("nodemailer");
 
 function mailSender(fuuid, to) {
   console.log(fuuid, to);
   return new Promise((resolve, reject) => {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "kvksatish98@gmail.com",
-        pass: "xkvdtlmziwvokapy",
-      },
-    });
+    // const transporter = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: {
+    //     user: "kvksatish98@gmail.com",
+    //     pass: "xkvdtlmziwvokapy",
+    //   },
+    // });
 
     const options = {
       from: "kvksatish98@gmail.com",
