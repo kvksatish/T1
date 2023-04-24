@@ -120,67 +120,67 @@ app.post("/signup", async (req, res) => {
 //   }
 // );
 
-app.get("/batch_bulk_mailing/:batchid", authentication, async (req, res) => {
-  const session = await createSession(req, res);
-  const type = req.query.type;
-  let batchid = req.params.batchid;
-  console.log(batchid, "bid");
-  let data = await MailModel.find({
-    batchid,
-    status: { $in: type },
-  });
-  let batchids = await MailModel.distinct("batchid");
-  console.log(data, batchids);
-  session.push(`found data in database using batchid `);
-  try {
-    managerofmails(data, session);
-  } catch (error) {}
-});
+// app.get("/batch_bulk_mailing/:batchid", authentication, async (req, res) => {
+//   const session = await createSession(req, res);
+//   const type = req.query.type;
+//   let batchid = req.params.batchid;
+//   console.log(batchid, "bid");
+//   let data = await MailModel.find({
+//     batchid,
+//     status: { $in: type },
+//   });
+//   let batchids = await MailModel.distinct("batchid");
+//   console.log(data, batchids);
+//   session.push(`found data in database using batchid `);
+//   try {
+//     managerofmails(data, session);
+//   } catch (error) {}
+// });
 
-app.get("/batchwise_mails/:batchid", authentication, async (req, res) => {
-  try {
-    const {
-      params: { batchid },
-      query: { type, page, limit },
-    } = req;
-    const perPage = parseInt(limit) || 10;
-    const pageNumber = parseInt(page) || 1;
-    console.log(type, page, limit, batchid);
-    const count = await MailModel.countDocuments({
-      batchid,
-      status: { $in: type },
-    });
-    const data = await MailModel.find({ batchid, status: { $in: type } })
-      .skip((pageNumber - 1) * perPage)
-      .limit(perPage);
+// app.get("/batchwise_mails/:batchid", authentication, async (req, res) => {
+//   try {
+//     const {
+//       params: { batchid },
+//       query: { type, page, limit },
+//     } = req;
+//     const perPage = parseInt(limit) || 10;
+//     const pageNumber = parseInt(page) || 1;
+//     console.log(type, page, limit, batchid);
+//     const count = await MailModel.countDocuments({
+//       batchid,
+//       status: { $in: type },
+//     });
+//     const data = await MailModel.find({ batchid, status: { $in: type } })
+//       .skip((pageNumber - 1) * perPage)
+//       .limit(perPage);
 
-    const totalPages = Math.ceil(count / perPage);
-    const response = {
-      data,
-      totalPages,
-      totalObjects: count,
-      currentPage: pageNumber,
-      hasPreviousPage: pageNumber > 1,
-      previousPage: pageNumber - 1,
-      hasNextPage: pageNumber < totalPages,
-      nextPage: pageNumber + 1,
-    };
-    console.log(response);
-    res.send(response);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-});
+//     const totalPages = Math.ceil(count / perPage);
+//     const response = {
+//       data,
+//       totalPages,
+//       totalObjects: count,
+//       currentPage: pageNumber,
+//       hasPreviousPage: pageNumber > 1,
+//       previousPage: pageNumber - 1,
+//       hasNextPage: pageNumber < totalPages,
+//       nextPage: pageNumber + 1,
+//     };
+//     console.log(response);
+//     res.send(response);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("Internal Server Error");
+//   }
+// });
 
-app.get("/mail_data/:uuid", authentication, async (req, res) => {
-  let ruuid = req.params.uuid;
-  const result = await MailModel.findOneAndUpdate(
-    { uuid: ruuid },
-    { $set: { open_time: Date.now(), status: "OPENED" } },
-    { new: true }
-  ).select("uuid");
-});
+// app.get("/mail_data/:uuid", authentication, async (req, res) => {
+//   let ruuid = req.params.uuid;
+//   const result = await MailModel.findOneAndUpdate(
+//     { uuid: ruuid },
+//     { $set: { open_time: Date.now(), status: "OPENED" } },
+//     { new: true }
+//   ).select("uuid");
+// });
 
 app.get("/all_batchs_info", authentication, async (req, res) => {
   const itemsPerPage = 10;
