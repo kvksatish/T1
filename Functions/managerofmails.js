@@ -1,5 +1,5 @@
 const { MailModel } = require("../Models/Maildata");
-const mailSender = require("./MailSender");
+//const mailSender = require("./MailSender");
 let f = 0;
 let s = 0;
 let tt = 0;
@@ -22,8 +22,8 @@ module.exports = managerofmails;
 
 async function mailchecker(email, id, session) {
   try {
-    let msr = await mailSender(id, email);
-    console.log(msr, "msrrrrrrrr");
+    //await mailSender(id, email);
+    // console.log(msr, "msrrrrrrrr");
     const result = await MailModel.findOneAndUpdate(
       { uuid: id },
       { $set: { status: "DELIVERED" } },
