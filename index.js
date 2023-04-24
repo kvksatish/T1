@@ -182,7 +182,7 @@ app.post("/signup", async (req, res) => {
 //   ).select("uuid");
 // });
 
-app.get("/all_batchs_info", authentication, async (req, res) => {
+app.get("/all_batchs_info", async (req, res) => {
   const itemsPerPage = 10;
 
   // Parse the current page from the query parameters
