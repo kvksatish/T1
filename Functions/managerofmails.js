@@ -1,5 +1,5 @@
 const { MailModel } = require("../Models/Maildata");
-const mailSender = require("./MailSender");
+const postman = require("./postman");
 let f = 0;
 let s = 0;
 let tt = 0;
@@ -23,7 +23,7 @@ module.exports = managerofmails;
 
 async function mailchecker(email, id, session) {
   try {
-    await mailSender(id, email);
+    await postman(id, email);
     // console.log(msr, "msrrrrrrrr");
     const result = await MailModel.findOneAndUpdate(
       { uuid: id },
