@@ -174,7 +174,7 @@ app.get("/batchwise_mails/:batchid", authentication, async (req, res) => {
   }
 });
 
-app.get("/mail_data/:uuid", authentication, async (req, res) => {
+app.get("/mail_data/:uuid", async (req, res) => {
   let ruuid = req.params.uuid;
   const result = await MailModel.findOneAndUpdate(
     { uuid: ruuid },
