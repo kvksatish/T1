@@ -109,54 +109,54 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.post("/dashboard", authentication, async (req, res) => {
-  // const { image, email } = req.body
-  // // console.log(email)
-  // try {
-  //     console.log("1")
-  //     const result1 = await cloudinary.uploader.upload(image, {
-  //         folder: "resimgs"
-  //     })
-  //     console.log("2")
-  //     const result2 = await cloudinary.uploader.upload(image, {
-  //         folder: "resimgs",
-  //         width: 100,
-  //         crop: "scale"
-  //     })
-  //     console.log("3")
-  //     const result3 = await cloudinary.uploader.upload(image, {
-  //         folder: "resimgs",
-  //         width: 300,
-  //         crop: "scale"
-  //     })
-  //     const imglinks = new ImagesModel({ email, imgslinks: [result2, result3, result1] });
-  //     // Save the user to the database
-  //     await imglinks.save();
-  //     console.log(result1, result2, result3, "4")
-  //     res.send({ result1, result2, result3 });
-  // } catch (err) {
-  //     console.error(err, "error");
-  //     res.status(500).send("Error uploading file");
-  // }
-});
+// app.post("/dashboard", authentication, async (req, res) => {
+//   // const { image, email } = req.body
+//   // // console.log(email)
+//   // try {
+//   //     console.log("1")
+//   //     const result1 = await cloudinary.uploader.upload(image, {
+//   //         folder: "resimgs"
+//   //     })
+//   //     console.log("2")
+//   //     const result2 = await cloudinary.uploader.upload(image, {
+//   //         folder: "resimgs",
+//   //         width: 100,
+//   //         crop: "scale"
+//   //     })
+//   //     console.log("3")
+//   //     const result3 = await cloudinary.uploader.upload(image, {
+//   //         folder: "resimgs",
+//   //         width: 300,
+//   //         crop: "scale"
+//   //     })
+//   //     const imglinks = new ImagesModel({ email, imgslinks: [result2, result3, result1] });
+//   //     // Save the user to the database
+//   //     await imglinks.save();
+//   //     console.log(result1, result2, result3, "4")
+//   //     res.send({ result1, result2, result3 });
+//   // } catch (err) {
+//   //     console.error(err, "error");
+//   //     res.status(500).send("Error uploading file");
+//   // }
+// });
 
-app.post(
-  "/multiple_mails_sender",
-  authentication,
-  upload.array("csvFile"),
-  csvToJson,
-  async (req, res) => {
-    const newArray = req.data;
-    console.log(newArray.length, "cccccccccc");
-    try {
-      let result = await MailModel.insertMany(newArray);
-      res.send(result);
-    } catch (error) {
-      console.log(error);
-      res.send("error");
-    }
-  }
-);
+// app.post(
+//   "/multiple_mails_sender",
+//   authentication,
+//   upload.array("csvFile"),
+//   csvToJson,
+//   async (req, res) => {
+//     const newArray = req.data;
+//     console.log(newArray.length, "cccccccccc");
+//     try {
+//       let result = await MailModel.insertMany(newArray);
+//       res.send(result);
+//     } catch (error) {
+//       console.log(error);
+//       res.send("error");
+//     }
+//   }
+// );
 
 // app.get("/batch_bulk_mailing/:batchid", authentication, async (req, res) => {
 //   const session = await createSession(req, res);
@@ -175,102 +175,102 @@ app.post(
 //   } catch (error) {}
 // });
 
-app.get("/batchwise_mails/:batchid", authentication, async (req, res) => {
-  try {
-    const {
-      params: { batchid },
-      query: { type, page, limit },
-    } = req;
-    const perPage = parseInt(limit) || 10;
-    const pageNumber = parseInt(page) || 1;
-    console.log(type, page, limit, batchid);
-    const count = await MailModel.countDocuments({
-      batchid,
-      status: { $in: type },
-    });
-    const data = await MailModel.find({ batchid, status: { $in: type } })
-      .skip((pageNumber - 1) * perPage)
-      .limit(perPage);
+// app.get("/batchwise_mails/:batchid", authentication, async (req, res) => {
+//   try {
+//     const {
+//       params: { batchid },
+//       query: { type, page, limit },
+//     } = req;
+//     const perPage = parseInt(limit) || 10;
+//     const pageNumber = parseInt(page) || 1;
+//     console.log(type, page, limit, batchid);
+//     const count = await MailModel.countDocuments({
+//       batchid,
+//       status: { $in: type },
+//     });
+//     const data = await MailModel.find({ batchid, status: { $in: type } })
+//       .skip((pageNumber - 1) * perPage)
+//       .limit(perPage);
 
-    const totalPages = Math.ceil(count / perPage);
-    const response = {
-      data,
-      totalPages,
-      totalObjects: count,
-      currentPage: pageNumber,
-      hasPreviousPage: pageNumber > 1,
-      previousPage: pageNumber - 1,
-      hasNextPage: pageNumber < totalPages,
-      nextPage: pageNumber + 1,
-    };
-    console.log(response);
-    res.send(response);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-});
+//     const totalPages = Math.ceil(count / perPage);
+//     const response = {
+//       data,
+//       totalPages,
+//       totalObjects: count,
+//       currentPage: pageNumber,
+//       hasPreviousPage: pageNumber > 1,
+//       previousPage: pageNumber - 1,
+//       hasNextPage: pageNumber < totalPages,
+//       nextPage: pageNumber + 1,
+//     };
+//     console.log(response);
+//     res.send(response);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("Internal Server Error");
+//   }
+// });
 
-app.get("/mail_data/:uuid", authentication, async (req, res) => {
-  let ruuid = req.params.uuid;
-  const result = await MailModel.findOneAndUpdate(
-    { uuid: ruuid },
-    { $set: { open_time: Date.now(), status: "OPENED" } },
-    { new: true }
-  ).select("uuid");
-});
+// app.get("/mail_data/:uuid", authentication, async (req, res) => {
+//   let ruuid = req.params.uuid;
+//   const result = await MailModel.findOneAndUpdate(
+//     { uuid: ruuid },
+//     { $set: { open_time: Date.now(), status: "OPENED" } },
+//     { new: true }
+//   ).select("uuid");
+// });
 
-app.get("/all_batchs_info", authentication, async (req, res) => {
-  const itemsPerPage = 10;
+// app.get("/all_batchs_info", authentication, async (req, res) => {
+//   const itemsPerPage = 10;
 
-  // Parse the current page from the query parameters
-  const page = parseInt(req.query.page) || 1;
+//   // Parse the current page from the query parameters
+//   const page = parseInt(req.query.page) || 1;
 
-  let batchids = await MailModel.distinct("batchid");
-  let batchInfo = [];
+//   let batchids = await MailModel.distinct("batchid");
+//   let batchInfo = [];
 
-  for (let i = 0; i < batchids.length; i++) {
-    let mail = await MailModel.findOne({ batchid: batchids[i] }).sort({
-      uploadtime: -1,
-    });
-    let count = await MailModel.countDocuments({ batchid: batchids[i] });
-    let uploadtime = mail.uploadtime;
-    batchInfo.push({
-      batchid: batchids[i],
-      uploadtime: uploadtime,
-      totalmails: count,
-    });
-  }
+//   for (let i = 0; i < batchids.length; i++) {
+//     let mail = await MailModel.findOne({ batchid: batchids[i] }).sort({
+//       uploadtime: -1,
+//     });
+//     let count = await MailModel.countDocuments({ batchid: batchids[i] });
+//     let uploadtime = mail.uploadtime;
+//     batchInfo.push({
+//       batchid: batchids[i],
+//       uploadtime: uploadtime,
+//       totalmails: count,
+//     });
+//   }
 
-  // Sort the batchInfo array by uploadtime in descending order
-  batchInfo.sort((b, a) => new Date(a.uploadtime) - new Date(b.uploadtime));
+//   // Sort the batchInfo array by uploadtime in descending order
+//   batchInfo.sort((b, a) => new Date(a.uploadtime) - new Date(b.uploadtime));
 
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(batchInfo.length / itemsPerPage);
+//   // Calculate the total number of pages
+//   const totalPages = Math.ceil(batchInfo.length / itemsPerPage);
 
-  // Calculate the index of the first item on the current page
-  const startIndex = (page - 1) * itemsPerPage;
+//   // Calculate the index of the first item on the current page
+//   const startIndex = (page - 1) * itemsPerPage;
 
-  // Calculate the index of the last item on the current page
-  const endIndex = startIndex + itemsPerPage;
+//   // Calculate the index of the last item on the current page
+//   const endIndex = startIndex + itemsPerPage;
 
-  // Get the current page of items
-  const currentBatchInfo = batchInfo.slice(startIndex, endIndex);
+//   // Get the current page of items
+//   const currentBatchInfo = batchInfo.slice(startIndex, endIndex);
 
-  // Construct the response object with the current page of items and pagination metadata
-  const response = {
-    batchInfo: currentBatchInfo,
-    currentPage: page,
-    totalPages: totalPages,
-    hasPreviousPage: page > 1,
-    previousPage: page - 1,
-    hasNextPage: endIndex < batchInfo.length,
-    nextPage: page + 1,
-  };
+//   // Construct the response object with the current page of items and pagination metadata
+//   const response = {
+//     batchInfo: currentBatchInfo,
+//     currentPage: page,
+//     totalPages: totalPages,
+//     hasPreviousPage: page > 1,
+//     previousPage: page - 1,
+//     hasNextPage: endIndex < batchInfo.length,
+//     nextPage: page + 1,
+//   };
 
-  console.log(response);
-  res.send(response);
-});
+//   console.log(response);
+//   res.send(response);
+// });
 
 app.listen(7500, async () => {
   try {
