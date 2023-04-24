@@ -102,23 +102,23 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-// app.post(
-//   "/multiple_mails_sender",
-//   authentication,
-//   upload.array("csvFile"),
-//   csvToJson,
-//   async (req, res) => {
-//     const newArray = req.data;
-//     console.log(newArray.length, "cccccccccc");
-//     try {
-//       let result = await MailModel.insertMany(newArray);
-//       res.send(result);
-//     } catch (error) {
-//       console.log(error);
-//       res.send("error");
-//     }
-//   }
-// );
+app.post(
+  "/multiple_mails_sender",
+  authentication,
+  upload.array("csvFile"),
+  csvToJson,
+  async (req, res) => {
+    const newArray = req.data;
+    console.log(newArray.length, "cccccccccc");
+    try {
+      let result = await MailModel.insertMany(newArray);
+      res.send(result);
+    } catch (error) {
+      console.log(error);
+      res.send("error");
+    }
+  }
+);
 
 // app.get("/batch_bulk_mailing/:batchid", authentication, async (req, res) => {
 //   const session = await createSession(req, res);
