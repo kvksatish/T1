@@ -10,7 +10,7 @@ const authentication = require("./Middleware/authentication.js");
 const app = express();
 const { v4: uuid } = require("uuid");
 const { createSession } = require("better-sse");
-
+const path = require("path");
 const multer = require("multer");
 
 const upload = multer();
@@ -23,8 +23,16 @@ const { MailModel } = require("./Models/Maildata.js");
 const csvToJson = require("./Middleware/csvToJson.js");
 const managerofmails = require("./Functions/managerofmails.js");
 
+const _dirname = path.dirname("");
+const buildPath = path.join(_dirname, "./build");
+app.use(express.static(buildPath));
+
 app.get("/", (req, res) => {
-  res.send("welcome");
+  res.sendFile(path.join(_dirname, "./build/index.html"), function (err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
 });
 
 app.post("/login", async (req, res) => {
@@ -138,22 +146,68 @@ app.get("/batch_bulk_mailing/:batchid", async (req, res) => {
   } catch (error) {}
 });
 
-app.get("/batchwise_mails/:batchid", authentication, async (req, res) => {
+// app.get("/batchwise_mails/:batchid", authentication, async (req, res) => {
+//   try {
+//     const {
+//       params: { batchid },
+//       query: { type, page, limit },
+//     } = req;
+//     const perPage = parseInt(limit) || 10;
+//     const pageNumber = parseInt(page) || 1;
+//     console.log(type, page, limit, batchid);
+//     const count = await MailModel.countDocuments({
+//       batchid,
+//       status: { $in: type },
+//     });
+//     const data = await MailModel.find({ batchid, status: { $in: type } })
+//       .skip((pageNumber - 1) * perPage)
+//       .limit(perPage);
+
+//     const totalPages = Math.ceil(count / perPage);
+//     const response = {
+//       data,
+//       totalPages,
+//       totalObjects: count,
+//       currentPage: pageNumber,
+//       hasPreviousPage: pageNumber > 1,
+//       previousPage: pageNumber - 1,
+//       hasNextPage: pageNumber < totalPages,
+//       nextPage: pageNumber + 1,
+//     };`
+//     console.log(response);
+//     res.send(response);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("Internal Server Error");
+//   }
+// });
+
+app.get("/batchwise_mails", authentication, async (req, res) => {
+  console.log("SAVAEFV");
   try {
     const {
-      params: { batchid },
-      query: { type, page, limit },
+      query: { type, page, limit, batchid },
     } = req;
     const perPage = parseInt(limit) || 10;
     const pageNumber = parseInt(page) || 1;
-    console.log(type, page, limit, batchid);
-    const count = await MailModel.countDocuments({
-      batchid,
-      status: { $in: type },
-    });
-    const data = await MailModel.find({ batchid, status: { $in: type } })
-      .skip((pageNumber - 1) * perPage)
-      .limit(perPage);
+    console.log(type, page, limit, "batchid", batchid);
+    let count, data;
+    if (batchid) {
+      count = await MailModel.countDocuments({
+        batchid,
+        status: { $in: type },
+      });
+      data = await MailModel.find({ batchid, status: { $in: type } })
+        .skip((pageNumber - 1) * perPage)
+        .limit(perPage);
+    } else {
+      count = await MailModel.countDocuments({
+        status: { $in: type },
+      });
+      data = await MailModel.find({ status: { $in: type } })
+        .skip((pageNumber - 1) * perPage)
+        .limit(perPage);
+    }
 
     const totalPages = Math.ceil(count / perPage);
     const response = {
@@ -181,6 +235,28 @@ app.get("/mail_data/:uuid", async (req, res) => {
     { $set: { open_time: Date.now(), status: "OPENED" } },
     { new: true }
   ).select("uuid");
+});
+
+app.get("/convert_to_lead/:uuid", authentication, async (req, res) => {
+  try {
+    let ruuid = req.params.uuid;
+    const result = await MailModel.findOneAndUpdate(
+      { uuid: ruuid },
+      { $set: { open_time: Date.now(), status: "LEAD" } },
+      { new: true }
+    ).select("uuid");
+
+    // Send response
+    res
+      .status(200)
+      .json({ message: "Mail updated successfully", uuid: result.uuid });
+  } catch (error) {
+    // Handle error
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Something went wrong while updating the mail" });
+  }
 });
 
 app.get("/all_batchs_info", authentication, async (req, res) => {
