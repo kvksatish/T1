@@ -27,14 +27,6 @@ const _dirname = path.dirname("");
 const buildPath = path.join(_dirname, "./build");
 app.use(express.static(buildPath));
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(_dirname, "./build/index.html"), function (err) {
-    if (err) {
-      res.status(500).send(err);
-    }
-  });
-});
-
 app.post("/login", async (req, res) => {
   //  res.send("wrgnrggnrgngnnnnnyrn")
   let { email, password } = req.body;
@@ -309,6 +301,14 @@ app.get("/all_batchs_info", authentication, async (req, res) => {
 
   console.log(response);
   res.send(response);
+});
+
+app.use("/", (req, res) => {
+  res.sendFile(path.join(_dirname, "./build/index.html"), function (err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
 });
 
 app.listen(7500, async () => {
